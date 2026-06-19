@@ -1,7 +1,8 @@
 import { APIError } from "@metronome/sdk"
+import { fileURLToPath } from "node:url"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-import { formatError, run } from "../src/cli.js"
+import { formatError, isMainModule, run } from "../src/cli.js"
 
 const extractMock = vi.fn(async () => "provider: metronome\n")
 const syncMock = vi.fn(async () => ({ hasPendingChanges: true }))
@@ -91,5 +92,23 @@ describe("formatError", () => {
 
     it("stringifies non-error values", () => {
         expect(formatError("oops")).toBe("oops")
+    })
+})
+
+describe("isMainModule", () => {
+    it("returns false when there is no entry path", () => {
+        expect(isMainModule(undefined, import.meta.url)).toBe(false)
+    })
+
+    it("returns false when the entry cannot be resolved", () => {
+        expect(isMainModule("/nope/this-path-does-not-exist", import.meta.url)).toBe(false)
+    })
+
+    it("returns true when the entry resolves to the module file", () => {
+        expect(isMainModule(fileURLToPath(import.meta.url), import.meta.url)).toBe(true)
+    })
+
+    it("returns false when the entry is a different real file", () => {
+        expect(isMainModule(process.execPath, import.meta.url)).toBe(false)
     })
 })

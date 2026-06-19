@@ -1,10 +1,14 @@
 #!/usr/bin/env node
 import { APIError } from "@metronome/sdk"
 import { Command } from "commander"
+import { realpathSync } from "node:fs"
+import { createRequire } from "node:module"
 import { fileURLToPath } from "node:url"
 
 import { extract } from "./extract.js"
 import { resolveSyncExitCode, sync } from "./sync.js"
+
+const { version } = createRequire(import.meta.url)("../package.json") as { version: string }
 
 export function formatError(error: unknown): string {
     if (error instanceof APIError) {
@@ -30,7 +34,7 @@ export function formatError(error: unknown): string {
 export function buildProgram(): Command {
     const program = new Command()
 
-    program.name("rate-card").description("Extract and sync billing rate card pricing as YAML").version("0.1.0")
+    program.name("rate-card").description("Extract and sync billing rate card pricing as YAML").version(version)
 
     program
         .command("extract")
@@ -78,7 +82,20 @@ export async function run(argv: string[]): Promise<void> {
     }
 }
 
-// Only run if the script is called directly
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
+// Run only when invoked directly. argv[1] may be a symlink (e.g. npm's global
+// bin), so resolve both sides to their real paths before comparing.
+export function isMainModule(entry: string | undefined, moduleUrl: string): boolean {
+    if (!entry) {
+        return false
+    }
+
+    try {
+        return realpathSync(entry) === realpathSync(fileURLToPath(moduleUrl))
+    } catch {
+        return false
+    }
+}
+
+if (isMainModule(process.argv[1], import.meta.url)) {
     void run(process.argv)
 }
