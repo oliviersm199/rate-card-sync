@@ -1,0 +1,22 @@
+provider: metronome
+rateCard:
+    name: Standard rate card
+rates:
+    - product: GPT-5 input tokens
+      rateType: FLAT
+      price: 500
+      entitled: true
+    - product: GPT-5 output tokens
+      rateType: FLAT
+      price: 1500
+      entitled: true
+      pricingGroupValues:
+          region: us-west-2
+      billingFrequency: MONTHLY
+    - product: GPT-5 cached input tokens
+      rateType: FLAT
+      price: 0
+      entitled: true
+      commitRate:
+          rateType: FLAT
+          price: 50

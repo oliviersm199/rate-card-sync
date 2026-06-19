@@ -1,0 +1,29 @@
+name: Validate rate card spec
+
+on:
+    pull_request:
+        paths:
+            - "**.yaml"
+            - "**.yml"
+
+jobs:
+    test:
+        uses: ./.github/workflows/ci.yml
+
+    validate:
+        needs: test
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: npm
+
+            - run: npm ci
+
+            - name: Dry-run sync
+              env:
+                  METRONOME_BEARER_TOKEN: ${{ secrets.METRONOME_BEARER_TOKEN }}
+              run: npx rate-card sync examples/rate-card.yaml --dry-run --exit-code

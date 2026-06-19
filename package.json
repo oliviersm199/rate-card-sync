@@ -1,0 +1,76 @@
+{
+    "name": "@oliviersm199/rate-card-sync",
+    "version": "0.1.0",
+    "description": "CLI to extract and sync billing rate card pricing as YAML. Metronome supported today.",
+    "type": "module",
+    "main": "./dist/cli.js",
+    "types": "./dist/cli.d.ts",
+    "bin": {
+        "rate-card": "./dist/cli.js"
+    },
+    "exports": {
+        ".": {
+            "types": "./dist/cli.d.ts",
+            "import": "./dist/cli.js"
+        }
+    },
+    "files": [
+        "dist",
+        "README.md",
+        "LICENSE"
+    ],
+    "scripts": {
+        "build": "tsc",
+        "dev": "tsx src/cli.ts",
+        "format": "prettier --write .",
+        "format:check": "prettier --check .",
+        "typecheck": "tsc --noEmit",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "coverage": "vitest run --coverage",
+        "prepublishOnly": "npm run build && npm run test"
+    },
+    "keywords": [
+        "metronome",
+        "billing",
+        "rate-card",
+        "pricing",
+        "cli",
+        "yaml"
+    ],
+    "license": "MIT",
+    "author": "oliviersm199",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/oliviersm199/rate-card-sync.git"
+    },
+    "bugs": {
+        "url": "https://github.com/oliviersm199/rate-card-sync/issues"
+    },
+    "homepage": "https://github.com/oliviersm199/rate-card-sync#readme",
+    "engines": {
+        "node": ">=20"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "dependencies": {
+        "@metronome/sdk": "^3.4.1",
+        "commander": "^13.1.0",
+        "dequal": "^2.0.3",
+        "picocolors": "^1.1.1",
+        "uuid": "^14.0.0",
+        "yaml": "^2.7.0",
+        "zod": "^3.24.2"
+    },
+    "devDependencies": {
+        "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+        "@types/node": "^22.13.10",
+        "@types/uuid": "^10.0.0",
+        "@vitest/coverage-v8": "^3.0.9",
+        "prettier": "^3.5.3",
+        "tsx": "^4.19.3",
+        "typescript": "^5.8.2",
+        "vitest": "^3.0.9"
+    }
+}
