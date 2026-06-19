@@ -16,18 +16,21 @@ jobs:
         needs: test
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7
 
-            - uses: actions/setup-node@v4
+            - uses: actions/setup-node@v6
               with:
-                  node-version: 20
+                  node-version: 24
                   cache: npm
                   registry-url: https://registry.npmjs.org
+
+            # Trusted publishing (OIDC) needs npm >= 11.5.1; Node 24 ships npm 11.
+            - run: npm install -g npm@latest
 
             - run: npm ci
 
             - run: npm run build
 
+            # No NODE_AUTH_TOKEN: npm authenticates via the workflow's OIDC identity
+            # configured as a trusted publisher on npmjs.com. Provenance is automatic.
             - run: npm publish --provenance --access public
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
