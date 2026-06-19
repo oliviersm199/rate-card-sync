@@ -1,6 +1,6 @@
 {
     "name": "@oliviersm199/rate-card-sync",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "CLI to extract and sync billing rate card pricing as YAML. Metronome supported today.",
     "type": "module",
     "main": "./dist/cli.js",
