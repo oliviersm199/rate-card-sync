@@ -65,7 +65,7 @@
     },
     "devDependencies": {
         "@trivago/prettier-plugin-sort-imports": "^6.0.2",
-        "@types/node": "^22.13.10",
+        "@types/node": "^26.0.1",
         "@types/uuid": "^10.0.0",
         "@vitest/coverage-v8": "^4.1.9",
         "prettier": "^3.5.3",
